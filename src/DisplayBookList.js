@@ -7,7 +7,7 @@ import Book from "./Book";
  */
 class DisplayBookList extends Component {
     render() {
-        const {heading, books, handleCategoryChange} = this.props;
+        const {heading, books, handleShelfChange} = this.props;
         return (
             <div className="bookshelf">
                 <h2 className="bookshelf-title">{heading}</h2>
@@ -21,7 +21,7 @@ class DisplayBookList extends Component {
                                 shelf={book.shelf}
                                 title={book.title}
                                 authors={book.authors}
-                                changeCategory={handleCategoryChange}
+                                changeCategory={handleShelfChange}
                             />))}
                     </ol>
                 </div>
@@ -33,7 +33,7 @@ class DisplayBookList extends Component {
 DisplayBookList.propTypes = {
     heading: PropTypes.string,
     books: PropTypes.array.isRequired,
-    handleCategoryChange: PropTypes.func.isRequired
+    handleShelfChange: PropTypes.func.isRequired
 };
 
 export default DisplayBookList;
