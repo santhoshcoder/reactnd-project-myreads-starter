@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import * as BooksApi from "./BooksAPI";
 import DisplayBookList from "./DisplayBookList";
+import { Link } from "react-router-dom";
+import { Route } from "react-router-dom";
+import BookSearch from "./BookSearch";
 
 class MyReads extends Component {
     state = {
@@ -48,27 +51,44 @@ class MyReads extends Component {
     render() {
         const {currentlyReading,read,wantToRead} = this.getAllShelfBooks();
         return (
-            <div className="list-books">
-                <div className="list-books-title">
-                    <h1>MyReads</h1>
+            <div>
+            <Route exact path="/" render = {() => (
+                <div>
+                    <div className="list-books">
+                        <div className="list-books-title">
+                            <h1>MyReads</h1>
+                        </div>
+                        <div className="list-books-content">
+                            <DisplayBookList
+                                key={"currentlyReading"}
+                                books={currentlyReading}
+                                heading={"Currently Reading"}
+                                handleShelfChange={this.handleShelfChange}/>
+                            <DisplayBookList
+                                key={"wantToRead"}
+                                books={wantToRead}
+                                heading={"Want to Read"}
+                                handleShelfChange={this.handleShelfChange}/>
+                            <DisplayBookList
+                                key={"read"}
+                                books={read}
+                                heading={"Read"}
+                                handleShelfChange={this.handleShelfChange}/>
+                        </div>
+                    </div>
+                    <div className="open-search">
+                        <Link to="/search">
+                            <button>Add a book</button>
+                        </Link>
+                    </div>
                 </div>
-                <div className="list-books-content">
-                    <DisplayBookList
-                        key={"currentlyReading"}
-                        books={currentlyReading}
-                        heading={"Currently Reading"}
-                        handleShelfChange={this.handleShelfChange}/>
-                    <DisplayBookList
-                        key={"wantToRead"}
-                        books={wantToRead}
-                        heading={"Want to Read"}
-                        handleShelfChange={this.handleShelfChange}/>
-                    <DisplayBookList
-                        key={"read"}
-                        books={read}
-                        heading={"Read"}
-                        handleShelfChange={this.handleShelfChange}/>
-                </div>
+            )}
+            />
+            <Route exact path="/search" render = {
+                () => (
+                    <BookSearch handleShelfChange={this.handleShelfChange}/>
+                )}
+            />
             </div>
         );
     }
