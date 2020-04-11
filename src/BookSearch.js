@@ -5,15 +5,26 @@ import * as BooksApi from "./BooksAPI";
 import DisplayBookList from "./DisplayBookList";
 
 class BookSearch extends Component{
+    bookShelf = {};
     constructor(props) {
         super(props);
         this.state = {
             searchTerm: "",
             searchBooks: []
+        };
+        //Represent the books currently in the bookshelf in a HashMap and store it
+        this.bookShelf = {};
+
+        for (let book of this.props.books) {
+            this.bookShelf[book.id] = book;
         }
+        // console.log(JSON.stringify(this.props));
+        // console.log(`HashMap is ${JSON.stringify(this.bookShelf)}`);
+        // console.log("HashMap Generated");
     }
+
     handleInputChange = (query) => {
-        let queryTerm = query;
+        let queryTerm = query.trim();
         this.setState(() => (
             {
                 searchTerm: query,
@@ -22,14 +33,38 @@ class BookSearch extends Component{
         ));
         if (queryTerm.length !== 0) {
             BooksApi.search(queryTerm).then(
-                (books) => {
-                    console.log(books);
+                (books) =>
+                {
+                    let searchBooks = [];
+                    //console.log(books);
                     if (books && !books.error) {
-                        //Update Books shelf if they are currently in the bookshelves
+                        /*
+                            For every book lookup the bookShelf and do the following
+                            If book already exists update the shelf
+                            Else set the shelf, authors, imageLinks.smallThumbnail to "none",[],""
+                         */
+                        for (let book of books) {
+                            if (this.bookShelf[book.id] === undefined){
+                                let authors = book.authors === undefined? []: book.authors;
+                                let imageLinks = book.imageLinks === undefined? {smallThumbnail:""}:book.imageLinks;
+                                searchBooks.push({
+                                    ...book,
+                                    shelf: "none",
+                                    authors: authors,
+                                    imageLinks: imageLinks
+                                })
+                            }
+                            else {
+                                searchBooks.push({
+                                  ...book,
+                                  shelf: this.bookShelf[book.id].shelf
+                                })
+                            }
+                        }
                         this.setState(() => (
                             {
                                 searchTerm: query,
-                                searchBooks: books
+                                searchBooks: searchBooks
                             }
                         ))
                     }
@@ -61,7 +96,8 @@ class BookSearch extends Component{
 }
 
 BookSearch.propTypes = {
-    handleShelfChange: PropTypes.func.isRequired
+    handleShelfChange: PropTypes.func.isRequired,
+    books: PropTypes.array.isRequired
 };
 
 export default BookSearch;

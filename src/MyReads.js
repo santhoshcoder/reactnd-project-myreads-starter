@@ -95,7 +95,7 @@ class MyReads extends Component {
             />
             <Route exact path="/search" render = {
                 () => (
-                    <BookSearch handleShelfChange={this.handleShelfChange}/>
+                    <BookSearch handleShelfChange={this.handleShelfChange} books={this.state.books}/>
                 )}
             />
             </div>
