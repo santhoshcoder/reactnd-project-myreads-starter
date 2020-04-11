@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 class Book extends Component {
     handleChange = (event) => {
         event.preventDefault();
-        this.props.changeCategory(this.props.id,event.target.value);
+        this.props.changeCategory(this.props.book,event.target.value,this.props.shelf);
     };
     render() {
         const {image, shelf, title, authors} = this.props;
@@ -36,6 +36,7 @@ class Book extends Component {
 
 Book.propTypes = {
     id: PropTypes.string.isRequired,
+    book: PropTypes.object.isRequired,
     image: PropTypes.string.isRequired,
     shelf: PropTypes.string,
     title: PropTypes.string.isRequired,

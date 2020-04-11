@@ -33,19 +33,28 @@ class MyReads extends Component {
         }
         return {currentlyReading,read,wantToRead};
     };
-    handleShelfChange = (id, shelf) => {
-        console.log(`Trying to change a Book Id:${id}'s shelf to ${shelf}`);
-        this.setState((currentState) =>(
-            {
-                books: currentState.books.map(
-                    (book) => {
-                        if (book.id === id)
-                            book.shelf = shelf;
-                        return book;
-                    }
-                )
-            }
-        ));
+    handleShelfChange = (book, newShelf, oldShelf) => {
+        console.log(`Trying to change the "${book.title}" with Book Id:${book.id}'s shelf from ${oldShelf} to ${newShelf}`);
+        // this.setState((currentState) =>(
+        //     {
+        //         books: currentState.books.map(
+        //             (eachBook) => {
+        //                 if (eachBook.id === book.id)
+        //                     eachBook.shelf = shelf;
+        //                 return eachBook;
+        //             }
+        //         )
+        //     }
+        // ));
+        if (oldShelf === "none") {
+            console.log("Adding a new book to the bookshelf");
+        }
+        else if (newShelf === "none") {
+            console.log("Removing a book from the bookshelf");
+        }
+        else {
+            console.log("Updating one of the book's shelf");
+        }
         //Call the API to update book's shelf
     };
     render() {

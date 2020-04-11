@@ -13,10 +13,10 @@ class BookSearch extends Component{
         }
     }
     handleInputChange = (query) => {
-        let queryTerm = query.trim();
+        let queryTerm = query;
         this.setState(() => (
             {
-                searchTerm: query.trim(),
+                searchTerm: query,
                 searchBooks: []
             }
         ));
@@ -25,9 +25,10 @@ class BookSearch extends Component{
                 (books) => {
                     console.log(books);
                     if (books && !books.error) {
+                        //Update Books shelf if they are currently in the bookshelves
                         this.setState(() => (
                             {
-                                searchTerm: query.trim(),
+                                searchTerm: query,
                                 searchBooks: books
                             }
                         ))
