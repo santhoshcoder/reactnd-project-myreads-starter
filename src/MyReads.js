@@ -10,6 +10,7 @@ class MyReads extends Component {
         books: []
     };
     componentDidMount() {
+        console.log("ReWriting Books in the state");
         BooksApi.getAll().then(
             (books) => {
                 this.setState({
@@ -20,6 +21,8 @@ class MyReads extends Component {
     }
     getAllShelfBooks = () => {
         let currentlyReading = [],read = [],wantToRead = [];
+        console.log("Getting the books again");
+        console.log(`No of books are:${this.state.books.length}`);
         for (const book of this.state.books){
             if (book.shelf === "currentlyReading"){
                 currentlyReading.push(book);
@@ -35,27 +38,39 @@ class MyReads extends Component {
     };
     handleShelfChange = (book, newShelf, oldShelf) => {
         console.log(`Trying to change the "${book.title}" with Book Id:${book.id}'s shelf from ${oldShelf} to ${newShelf}`);
-        // this.setState((currentState) =>(
-        //     {
-        //         books: currentState.books.map(
-        //             (eachBook) => {
-        //                 if (eachBook.id === book.id)
-        //                     eachBook.shelf = shelf;
-        //                 return eachBook;
-        //             }
-        //         )
-        //     }
-        // ));
         if (oldShelf === "none") {
-            console.log("Adding a new book to the bookshelf");
+            console.log(`Adding a new book ${book.title} to the bookshelf`);
+            book.shelf = newShelf;
+            this.setState((currentState) => ({
+                books: [...currentState.books,book]
+            }));
         }
         else if (newShelf === "none") {
             console.log("Removing a book from the bookshelf");
+            this.setState((currentState) => ({
+                books: currentState.books.filter( (oldBook) => oldBook.id !== book.id)
+            }));
         }
         else {
             console.log("Updating one of the book's shelf");
+            this.setState((currentState) =>(
+                {
+                    books: currentState.books.map(
+                        (eachBook) => {
+                            if (eachBook.id === book.id)
+                                eachBook.shelf = newShelf;
+                            return eachBook;
+                        }
+                    )
+                }
+            ));
         }
         //Call the API to update book's shelf
+        BooksApi.update(book,newShelf).then(
+            () => {
+                console.log("API Updated");
+            }
+        )
     };
     render() {
         const {currentlyReading,read,wantToRead} = this.getAllShelfBooks();

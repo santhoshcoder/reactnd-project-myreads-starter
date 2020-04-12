@@ -3,11 +3,21 @@ import PropTypes from "prop-types";
 
 class Book extends Component {
     handleChange = (event) => {
-        event.preventDefault();
+        this.setState({
+            shelf: event.target.value
+        });
         this.props.changeCategory(this.props.book,event.target.value,this.props.shelf);
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            shelf: this.props.shelf
+        }
+    }
+
     render() {
-        const {image, shelf, title, authors} = this.props;
+        const {image, title, authors} = this.props;
         return (
             <li>
                 <div className="book">
@@ -17,7 +27,7 @@ class Book extends Component {
                             ""
                         </div>
                         <div className="book-shelf-changer">
-                            <select value={shelf} onChange={this.handleChange}>
+                            <select value={this.state.shelf} onChange={this.handleChange}>
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
