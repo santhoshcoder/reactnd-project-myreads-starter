@@ -33,7 +33,8 @@ class MyReads extends Component {
         }
         return {currentlyReading,read,wantToRead};
     };
-    handleShelfChange = (book, newShelf, oldShelf) => {
+    handleShelfChange = (book, newShelf) => {
+        let oldShelf = book.shelf;
         console.log(`Trying to change the "${book.title}" with Book Id:${book.id}'s shelf from ${oldShelf} to ${newShelf}`);
         if (oldShelf === "none") {
             console.log(`Adding a new book ${book.title} to the bookshelf`);

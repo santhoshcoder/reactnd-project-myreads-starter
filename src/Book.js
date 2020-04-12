@@ -6,24 +6,25 @@ class Book extends Component {
         this.setState({
             shelf: event.target.value
         });
-        this.props.changeCategory(this.props.book,event.target.value,this.props.shelf);
+        this.props.changeCategory(this.props.book,event.target.value);
     };
 
     constructor(props) {
+        const {shelf} = props.book;
         super(props);
         this.state = {
-            shelf: this.props.shelf
+            shelf
         }
     }
 
     render() {
-        const {image, title, authors} = this.props;
+        const {imageLinks, title, authors} = this.props.book;
         return (
             <li>
                 <div className="book">
                     <div className="book-top">
                         <div className="book-cover"
-                             style={{ width: 128, height: 193, backgroundImage: `url(${image})` }}>
+                             style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.smallThumbnail})` }}>
                             ""
                         </div>
                         <div className="book-shelf-changer">
@@ -45,12 +46,7 @@ class Book extends Component {
 }
 
 Book.propTypes = {
-    id: PropTypes.string.isRequired,
     book: PropTypes.object.isRequired,
-    image: PropTypes.string.isRequired,
-    shelf: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    authors: PropTypes.array.isRequired,
     changeCategory: PropTypes.func.isRequired
 };
 

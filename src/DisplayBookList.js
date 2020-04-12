@@ -16,12 +16,7 @@ class DisplayBookList extends Component {
                         {books.map((book) =>
                             (<Book
                                 key={book.id}
-                                id={book.id}
                                 book={book}
-                                image={book.imageLinks.smallThumbnail}
-                                shelf={book.shelf}
-                                title={book.title}
-                                authors={book.authors}
                                 changeCategory={handleShelfChange}
                             />))}
                     </ol>
