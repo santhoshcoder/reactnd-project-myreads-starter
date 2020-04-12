@@ -10,7 +10,6 @@ class MyReads extends Component {
         books: []
     };
     componentDidMount() {
-        console.log("ReWriting Books in the state");
         BooksApi.getAll().then(
             (books) => {
                 this.setState({
@@ -21,8 +20,6 @@ class MyReads extends Component {
     }
     getAllShelfBooks = () => {
         let currentlyReading = [],read = [],wantToRead = [];
-        console.log("Getting the books again");
-        console.log(`No of books are:${this.state.books.length}`);
         for (const book of this.state.books){
             if (book.shelf === "currentlyReading"){
                 currentlyReading.push(book);
@@ -68,7 +65,7 @@ class MyReads extends Component {
         //Call the API to update book's shelf
         BooksApi.update(book,newShelf).then(
             () => {
-                console.log("API Updated");
+                //console.log("API Updated");
             }
         )
     };

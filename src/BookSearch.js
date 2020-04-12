@@ -12,16 +12,20 @@ class BookSearch extends Component{
             searchTerm: "",
             searchBooks: []
         };
-        //Represent the books currently in the bookshelf in a HashMap and store it
-        this.bookShelf = {};
+        this.createMap();
+    }
 
+    createMap = () => {
+        //Represent the books currently in the bookshelf in a HashMap and store it
+        console.log(`No of books in the props are:${this.props.books.length}`);
+        this.bookShelf = {};
         for (let book of this.props.books) {
             this.bookShelf[book.id] = book;
         }
         // console.log(JSON.stringify(this.props));
         // console.log(`HashMap is ${JSON.stringify(this.bookShelf)}`);
-        // console.log("HashMap Generated");
-    }
+        // console.log(`HashMap Generated Boi and the no of keys are:${Object.keys(this.bookShelf).length}`);
+    };
 
     handleInputChange = (query) => {
         let queryTerm = query.trim();
@@ -35,6 +39,7 @@ class BookSearch extends Component{
             BooksApi.search(queryTerm).then(
                 (books) =>
                 {
+                    // console.log(`No of keys in the HashMap are:${Object.keys(this.bookShelf).length}`);
                     let searchBooks = [];
                     //console.log(books);
                     if (books && !books.error) {
@@ -43,6 +48,7 @@ class BookSearch extends Component{
                             If book already exists update the shelf
                             Else set the shelf, authors, imageLinks.smallThumbnail to "none",[],""
                          */
+                        this.createMap();
                         for (let book of books) {
                             if (this.bookShelf[book.id] === undefined){
                                 let authors = book.authors === undefined? []: book.authors;
