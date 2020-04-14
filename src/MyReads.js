@@ -81,7 +81,6 @@ class MyReads extends Component {
                             <h1>MyReads</h1>
                         </div>
                         <div className="list-books-content">
-                            {/*TODO: `Refactor the following similar code with a hashMap*/}
                             <DisplayBookList
                                 key={"currentlyReading"}
                                 books={currentlyReading}
