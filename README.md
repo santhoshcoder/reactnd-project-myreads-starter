@@ -5,8 +5,8 @@ An App to Add, Categorize and Track books which are currently being read, want t
 
 To get started developing right away:
 
-* install all project dependencies with `npm install`
-* start the development server with `npm start`
+* Install all project dependencies with `npm install`
+* Start the development server with `npm start`
 
 ## What You're Getting
 ```bash
