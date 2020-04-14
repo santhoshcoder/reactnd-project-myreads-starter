@@ -81,21 +81,22 @@ class MyReads extends Component {
                             <h1>MyReads</h1>
                         </div>
                         <div className="list-books-content">
+                            {/*TODO: `Refactor the following similar code with a hashMap*/}
                             <DisplayBookList
                                 key={"currentlyReading"}
                                 books={currentlyReading}
                                 heading={"Currently Reading"}
-                                handleShelfChange={this.handleShelfChange}/>
+                                handleShelfChange={this.handleShelfChange} search={false}/>
                             <DisplayBookList
                                 key={"wantToRead"}
                                 books={wantToRead}
                                 heading={"Want to Read"}
-                                handleShelfChange={this.handleShelfChange}/>
+                                handleShelfChange={this.handleShelfChange} search={false}/>
                             <DisplayBookList
                                 key={"read"}
                                 books={read}
                                 heading={"Read"}
-                                handleShelfChange={this.handleShelfChange}/>
+                                handleShelfChange={this.handleShelfChange} search={false}/>
                         </div>
                     </div>
                     <div className="open-search">

@@ -5,79 +5,51 @@ import * as BooksApi from "./BooksAPI";
 import DisplayBookList from "./DisplayBookList";
 
 class BookSearch extends Component{
-    bookShelf = {};
     constructor(props) {
         super(props);
         this.state = {
             searchTerm: "",
             searchBooks: []
         };
-        this.createMap();
     }
-
-    createMap = () => {
-        //Represent the books currently in the bookshelf in a HashMap and store it
-        console.log(`No of books in the props are:${this.props.books.length}`);
-        this.bookShelf = {};
-        for (let book of this.props.books) {
-            this.bookShelf[book.id] = book;
-        }
-        // console.log(JSON.stringify(this.props));
-        // console.log(`HashMap is ${JSON.stringify(this.bookShelf)}`);
-        // console.log(`HashMap Generated Boi and the no of keys are:${Object.keys(this.bookShelf).length}`);
-    };
 
     handleInputChange = (query) => {
         let queryTerm = query.trim();
+        console.log("Setting Search Books to empty");
         this.setState(() => (
             {
                 searchTerm: query,
                 searchBooks: []
             }
-        ));
-        if (queryTerm.length !== 0) {
-            BooksApi.search(queryTerm).then(
-                (books) =>
-                {
-                    // console.log(`No of keys in the HashMap are:${Object.keys(this.bookShelf).length}`);
-                    let searchBooks = [];
-                    //console.log(books);
-                    if (books && !books.error) {
-                        /*
-                            For every book lookup the bookShelf and do the following
-                            If book already exists update the shelf
-                            Else set the shelf, authors, imageLinks.smallThumbnail to "none",[],""
-                         */
-                        this.createMap();
-                        for (let book of books) {
-                            if (this.bookShelf[book.id] === undefined){
-                                let authors = book.authors === undefined? []: book.authors;
-                                let imageLinks = book.imageLinks === undefined? {smallThumbnail:""}:book.imageLinks;
-                                searchBooks.push({
-                                    ...book,
-                                    shelf: "none",
-                                    authors: authors,
-                                    imageLinks: imageLinks
-                                })
-                            }
-                            else {
-                                searchBooks.push({
-                                  ...book,
-                                  shelf: this.bookShelf[book.id].shelf
-                                })
-                            }
+        ),() =>{
+            if (queryTerm.length !== 0) {
+                BooksApi.search(queryTerm).then(
+                    (books) =>
+                    {
+                        console.log(`QueryTerm is ${queryTerm} & query is ${this.state.searchTerm}`);
+                        if (books && !books.error && this.state.searchTerm.length !== 0) {
+                            this.setState((currentState) => (
+                                {
+                                    ...currentState,
+                                    searchBooks: books
+                                }
+                            ))
                         }
-                        this.setState(() => (
-                            {
-                                searchTerm: query,
-                                searchBooks: searchBooks
-                            }
-                        ))
                     }
-                }
-            );
-        }
+                );
+            }
+        });
     };
+
+    createMap = () => {
+        let bookShelf = {};
+        console.log(`No of books in the props are:${this.props.books.length}`);
+        for (let book of this.props.books) {
+            bookShelf[book.id] = book;
+        }
+        return bookShelf;
+    };
+
     render() {
         return (
             <div className="search-books">
@@ -94,7 +66,7 @@ class BookSearch extends Component{
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <DisplayBookList books={this.state.searchBooks} handleShelfChange={this.props.handleShelfChange}/>
+                    <DisplayBookList books={this.state.searchBooks} handleShelfChange={this.props.handleShelfChange} map={this.createMap()} search={true}/>
                 </div>
             </div>
         );

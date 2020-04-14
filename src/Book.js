@@ -19,12 +19,13 @@ class Book extends Component {
 
     render() {
         const {imageLinks, title, authors} = this.props.book;
+        const url = (imageLinks && imageLinks.smallThumbnail)?imageLinks.smallThumbnail:"";
         return (
             <li>
                 <div className="book">
                     <div className="book-top">
                         <div className="book-cover"
-                             style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.smallThumbnail})` }}>
+                             style={{ width: 128, height: 193, backgroundImage: `url(${url})` }}>
                             ""
                         </div>
                         <div className="book-shelf-changer">
@@ -38,7 +39,7 @@ class Book extends Component {
                         </div>
                     </div>
                     <div className="book-title">{title}</div>
-                    <div className="book-authors">{authors.join(', ')}</div>
+                    <div className="book-authors">{authors && authors.join(', ')}</div>
                 </div>
             </li>
         );
